@@ -1,0 +1,18 @@
+{
+  "type": "module",
+  "name": "nr-pixoo",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@apollo/client": "^3.7.12",
+    "cross-fetch": "^3.1.5",
+    "graphql": "^16.6.0",
+    "pixoo-api": "^0.2.3"
+  }
+}
