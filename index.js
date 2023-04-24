@@ -1,6 +1,7 @@
 import { PixooAPI } from 'pixoo-api'
 import { sleep, randomInt } from './helpers.js'
 import colors from './colors.js'
+import { entities } from './data.js'
 
 const pixoo = new PixooAPI('192.168.1.56', 64)
 await pixoo.initialize()
@@ -14,6 +15,25 @@ const fillFrom = (start, cols, rows) => {
     for (var j=0; j<rows; j++) {
       const row = start[1] + j*3
       pixoo.drawRect( [ col, row ], [ col+2, row+2 ], colors.green, true )
+    }
+  }
+  pixoo.push()
+}
+
+const fillEntities = (entities, start, cols, rows) => {
+  var next = 0
+  for (var i=0; i<cols; i++) {
+    const col = start[0] + i*3
+    for (var j=0; j<rows; j++) {
+      const row = start[1] + j*3
+      var color = null
+      switch(entities[next].alertSeverity) {
+        case 'CRITICAL': color = colors.red;
+        case 'NOT_ALERTING': color = colors.green;
+        case 'WARNING': color = colors.yellow;
+        default: color = colors.grey;
+      }
+      pixoo.drawRect( [ col, row ], [ col+2, row+2 ], color, true )
     }
   }
   pixoo.push()
@@ -38,3 +58,9 @@ pixoo.drawTextLeft("SLOs", 1, colors.white, 43 )
 pixoo.drawRect( [ 42, 6 ], [ 63, 63 ], colors.grey, false )
 
 pixoo.push()
+
+const alertingEntities = entities().filter(el => el.alertSeverity != 'NOT_CONFIGURED')
+
+console.log("entities count:", alertingEntities.length)
+
+fillEntities(alertingEntities, [2,8], 6, 18 )
