@@ -1,11 +1,11 @@
 import fetch from 'cross-fetch'
 
-const entities = async () => {
+const entities = async (query) => {
   const body = JSON.stringify({
     query: `
-      query {
+      query GetAlertingStatus($query: String) {
         actor {
-          entitySearch(query:"accountId = 10671289 AND type IN ( 'APPLICATION', 'MONITOR', 'KEY_TRANSACTION')") {
+          entitySearch(query: $query) {
             results {
               entities {
                 name
@@ -18,7 +18,8 @@ const entities = async () => {
           }
         }
       }
-    `
+    `,
+    variables: { query }
   })
 
   const options = {
@@ -29,6 +30,7 @@ const entities = async () => {
       'Api-Key': process.env.API_KEY
     }
   }
+  console.log(process.env.GRAPHQL_URI)
   console.log(options)
 
   const resp = await fetch(process.env.GRAPHQL_URI, options).catch(err => {
@@ -36,11 +38,13 @@ const entities = async () => {
   });
 
   const result = await resp.json()
+  console.log("result", result)
 
   if (result.errors) {
     console.log("Errors: ", result.errors)
     process.exit()
   }
+  console.log("query: ", query)
   console.log("Entities found:", result.data.actor.entitySearch.results.entities.length)
 
   return result.data.actor.entitySearch.results.entities
