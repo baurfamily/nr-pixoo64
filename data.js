@@ -44,7 +44,7 @@ const entities = async (query) => {
     console.log("Errors: ", result.errors)
     process.exit()
   }
-  console.log("query: ", query)
+  // console.log("query: ",)
   console.log("Entities found:", result.data.actor.entitySearch.results.entities.length)
 
   return result.data.actor.entitySearch.results.entities

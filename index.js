@@ -3,7 +3,7 @@ import { sleep, randomInt } from './helpers.js'
 import colors from './colors.js'
 import { entities } from './data.js'
 
-const pixoo = new PixooAPI('192.168.1.56', 64)
+const pixoo = new PixooAPI(process.env.PIXOO_IP, 64)
 await pixoo.initialize()
 
 console.log("clearing display...")
