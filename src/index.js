@@ -1,9 +1,17 @@
+import dotenv from 'dotenv'
+dotenv.config()
+
 import { PixooAPI } from 'pixoo-api'
 import { sleep, randomInt } from './helpers.js'
 import colors from './colors.js'
 import { entities } from './data.js'
+import { getIps } from './get-ip.js'
 
-const pixoo = new PixooAPI(process.env.PIXOO_IP, 64)
+
+const pixooAddress = (await getIps())[0]
+console.log(`connecting to ${pixooAddress}`)
+
+const pixoo = new PixooAPI(pixooAddress, 64)
 await pixoo.initialize()
 
 console.log("clearing display...")
@@ -80,7 +88,6 @@ const gatherAndDisplay = () => {
     console.log("entities count:", alertingEntities.length)
 
     fillEntities(alertingEntities, [2,8], 6, 18 )
-    setTimeout(gatherAndDisplay, 10000)
   })
 
   console.log("looking for synthetics monitors...")
@@ -91,7 +98,6 @@ const gatherAndDisplay = () => {
     console.log("entities count:", alertingEntities.length)
 
     fillEntities(alertingEntities, [ 23, 8 ], 6, 8 )
-    setTimeout(gatherAndDisplay, 60000)
   })
 
   console.log("looking for key transactions...")
@@ -101,9 +107,10 @@ const gatherAndDisplay = () => {
 
     console.log("entities count:", alertingEntities.length)
 
-    fillEntities(alertingEntities, [ 23, 41 ], 6, 7 )
-    setTimeout(gatherAndDisplay, 10000)
+   fillEntities(alertingEntities, [ 23, 41 ], 6, 7 )
   })
+
+  setTimeout(gatherAndDisplay, 60000)
 }
 
 

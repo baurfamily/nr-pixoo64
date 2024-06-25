@@ -30,10 +30,10 @@ const entities = async (query) => {
       'Api-Key': process.env.API_KEY
     }
   }
-  console.log(process.env.GRAPHQL_URI)
+  console.log(process.env.GRAPHQL_URL)
   console.log(options)
 
-  const resp = await fetch(process.env.GRAPHQL_URI, options).catch(err => {
+  const resp = await fetch(process.env.GRAPHQL_URL, options).catch(err => {
     console.error(err);
   });
 
@@ -45,7 +45,7 @@ const entities = async (query) => {
     process.exit()
   }
   // console.log("query: ",)
-  console.log("Entities found:", result.data.actor.entitySearch.results.entities.length)
+  console.log("Entities found:", result?.data.actor.entitySearch.results.entities.length)
 
   return result.data.actor.entitySearch.results.entities
 }
